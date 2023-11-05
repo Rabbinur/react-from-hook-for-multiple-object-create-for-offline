@@ -1,0 +1,143 @@
+const AddCOurse=()=>{
+
+const [offlineSchedule, setOfflineSchedule] = useState([]);
+
+  const [newOfflineSchedule, setNewOfflineSchedule] = useState({
+    routine: "",
+    classTime: "",
+  });
+
+  const handleInputChange1 = (event) => {
+    const { name, value } = event.target;
+
+    setNewOfflineSchedule({
+      ...newOfflineSchedule,
+      [name]: value,
+    });
+  };
+
+  const addOfflineSchedule = () => {
+    const updatedOfflineSchedule = [...offlineSchedule, newOfflineSchedule];
+
+    setOfflineSchedule(updatedOfflineSchedule);
+
+    // Update the form values without the university being added
+    setValue("offlineSchedule", updatedOfflineSchedule);
+
+    setNewOfflineSchedule({
+      routine: "",
+      classTime: "",
+    });
+  };
+  const removeOfflineSchedule = (index) => {
+    const updatedOfflineSchedule = [...offlineSchedule];
+
+    updatedOfflineSchedule.splice(index, 1);
+
+    // Update the form values without the removed university
+    setValue("offlineSchedule", updatedOfflineSchedule);
+
+    setOfflineSchedule(updatedOfflineSchedule);
+  };
+
+return(
+   <div className="border rounded-md mt-10">
+          <div className="bg-[#607d8b] text-white py-2 mb-10">
+            <h3 className="font-bold text-xl tracking-wide pl-5">
+              Course schedule for offline
+            </h3>
+          </div>
+
+          <div className=" mb-7 px-5">
+            <div className=" mb-7 px-5">
+              <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-20">
+                <div>
+                  <label className="mb-2 md:text-lg  text-gray-400">
+                    Routine (Ex. Sat - Mon -Wed)
+                  </label>
+                </div>
+                <div>
+                  <Input
+                    type="text"
+                    name="routine"
+                    value={newOfflineSchedule.routine}
+                    onChange={handleInputChange1}
+                    size="lg"
+                    color="blue"
+                    className="border text-white py-2 px-5 
+                 rounded w-full max-w-xs lg:max-w-lg xl:max-w-xl 2xl:min-w-full"
+                    label=" Routine "
+                  />
+                  {errors.routine && (
+                    <p>routine is required and must be valid</p>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className=" mb-7 px-5">
+              <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-20">
+                <div>
+                  <label className="mb-2 md:text-lg  text-gray-400">
+                    Time: ( Ex. 10:00 AM )
+                  </label>
+                </div>
+                <div>
+                  <Input
+                    type="text"
+                    name="classTime"
+                    value={newOfflineSchedule.classTime}
+                    onChange={handleInputChange1}
+                    size="lg"
+                    color="blue"
+                    className="border text-white py-2 px-5 
+                 rounded w-full max-w-xs lg:max-w-lg xl:max-w-xl 2xl:min-w-full"
+                    label=" Class Time "
+                  />
+                  {errors.classTime && (
+                    <p>classTime is required and must be valid</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="text-end mr-5 my-5">
+            <Button
+              type="button"
+              className="bg-blue-500"
+              onClick={addOfflineSchedule}
+            >
+              Add Class Routine
+            </Button>
+          </div>
+          {offlineSchedule.length > 0 && (
+            <div className="m-5 h-[400px] overflow-scroll">
+              <h2 className="text-center py-10">Added offline Routine:</h2>
+              <ul className="grid xl:grid-cols-4 md:grid-cols-2  gap-10 py-5">
+                {offlineSchedule.map((offline, index) => (
+                  <li key={index}>
+                    <p className="flex justify-between">
+                      <h1 className="text-center font-bold text-blue-700 py-3">
+                        {" "}
+                        offline Routine {index + 1}:{" "}
+                      </h1>
+                      <Button
+                        className="bg-red-500 "
+                        onClick={() => removeOfflineSchedule(index)}
+                      >
+                        Remove
+                      </Button>
+                    </p>
+                    <ul>
+                      {Object.entries(offline).map(([key, value]) => (
+                        <li key={key} className="capitalize">
+                          <span>{key}</span> : <span>{value}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+)}
